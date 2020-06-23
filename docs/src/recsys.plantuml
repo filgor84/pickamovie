@@ -1,0 +1,3 @@
+@startuml Recsys_Scheme
+A -> B : Test
+@enduml
