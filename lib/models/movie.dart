@@ -9,7 +9,11 @@ class Movie {
     @required title,
     @required imdbId,
     @required popularity,
-  });
+  }){
+    this.title = title;
+    this.imdbId = imdbId;
+    this.popularity = popularity;
+  }
 
   Movie.fromJson(Map json)
       : title = json["title"],

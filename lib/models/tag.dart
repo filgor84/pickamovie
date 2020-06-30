@@ -8,13 +8,16 @@ class Tag {
   Tag({
     @required tagName,
     @required suggMovie,
-  });
+  }){
+    this.tagName=tagName;
+    this.suggMovie=suggMovie;
+  }
+  
   Tag.fromJson(Map json):
     tagName=json["tag"],
     suggMovie= Movie.fromJson(json["top_movie"]);
   @override
   String toString() {
-    // TODO: implement toString
     return "Tag: $tagName\nBest Movie:\n"+suggMovie.toString();
   }
 }

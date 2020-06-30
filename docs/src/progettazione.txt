@@ -1,0 +1,18 @@
+Creazione interfaccia pagina principale -> Fatto
+Creazione modello a stati
+Classi ausiliarie
+-una classe interfaccia ai dati: riceve i nomi dei tag scelti ed estrae la lista di tag presenti nel file json (NB i tag scelti sono PER DESIGN
+assenti dal file json, quindi non serve filtrarli)
+-una classe interfaccia alla memoria delle scelte passate
+
+Stati:
+-Tag Scelti (Chosen Tags)
+metodi previsti:
+    -aggiungi tag
+    -rimuovi tag in posizione i
+    -reset
+
+-Tag Suggeriti
+metodi previsti:
+    -carica le scelte possibili relative a quelli già scelti
+    -passami i primi n tag 

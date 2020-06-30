@@ -3,27 +3,25 @@ import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:pickamovie/models/options.dart';
 import 'package:pickamovie/models/tag.dart';
+import 'package:pickamovie/recsys/preferences.dart';
 
-class TagSuggestions {
-  List<Tag> _chosenTags = [];
+class TagSuggestionsLoader {
   List<Tag> _availableTags = [];
   Options options;
   var _rng = new Random();
+  Preferences _pref = Preferences();
 
-  updateAvailableTags() async {
-    final tagNames = _chosenTags.map((e) => e.tagName).toList();
+  updateAvailableTags(List<Tag> chosenTags) async {
+    final tagNames = chosenTags.map((e) => e.tagName).toList();
+    tagNames.sort();
     final fileName = tagNames.join("_") + "tags.json";
     final dirName = "assets/json/";
     await rootBundle.loadString(dirName + fileName).then((String jsonData) {
       Iterable lTags = json.decode(jsonData);
-      //print(lTags.toList());
-      //List<Map> availableTagsJson = json.decode(jsonData);
-      this._availableTags = lTags.map((e) {
+      _availableTags = lTags.map((e) {
         return Tag.fromJson(e);
       }).toList();
-      this._availableTags.sort((t1, t2) =>
-          t1.suggMovie.popularity.compareTo(t2.suggMovie.popularity));
-      //print(_availableTags);
+      _pref.sortTagByPreferences(_availableTags);
     });
   }
 
@@ -48,26 +46,7 @@ class TagSuggestions {
     return nRandomTags;
   }
 
-  addChosenTag(Tag t) {
-    if (_chosenTags.length < 3) {
-      _chosenTags.add(t);
-      updateAvailableTags();
-    } else {
-      print("Warning! You can't choose more than 3 tags");
-    }
-  }
-
-  removeChosenTag(int index) {
-    if (_chosenTags.isNotEmpty) {
-      _chosenTags.removeAt(index);
-      updateAvailableTags();
-    } else {
-      print("Warning! You can't remove tags from an empty list");
-    }
-  }
-
-  hasAvailableTags()
-  {
+  hasAvailableTags() {
     return this._availableTags.isNotEmpty;
   }
 }
