@@ -5,68 +5,6 @@ import 'models/movie.dart';
 import 'models/tag.dart';
 import 'recsys/tag_suggestion.dart';
 
-class SuggestionTagsModel extends ChangeNotifier {
-  final List<Tag> _tags = [];
-  UnmodifiableListView<Tag> get tags => UnmodifiableListView(_tags);
-  final List<List<Tag>> _suggestionsWindows = [];
-  TagSuggestionsLoader _tagSuggestionsLoader = TagSuggestionsLoader();
-  int cur = 0;
-  UnmodifiableListView<Tag> get suggestions =>
-      UnmodifiableListView(_suggestionsWindows[cur]);
-
-  void addTag(Tag t) {
-    if (tags.length < 3) {
-      _tags.add(t);
-      notifyListeners();
-    } else {
-      print("Warning: trying to search more than 3 tags");
-    }
-  }
-
-  void updateSuggestionWindows() async {
-    _suggestionsWindows.clear();
-    _suggestionsWindows.add(await _loadNewSuggestions());
-    cur = 0;
-  }
-
-  void removeAllTags() async {
-    _tags.clear();
-    updateSuggestionWindows();
-    notifyListeners();
-  }
-
-  void removeTagAt(int i) {
-    _tags.removeAt(i);
-    updateSuggestionWindows();
-    notifyListeners();
-  }
-
-  Future<List<Tag>> _loadNewSuggestions() async {
-    await _tagSuggestionsLoader.updateAvailableTags(_tags);
-    return _tagSuggestionsLoader.getNRandomTags(6);
-  }
-
-  windowFwd() async {
-    if (cur == _suggestionsWindows.length - 1) {
-      List<Tag> newSuggestions = await _loadNewSuggestions();
-      if (newSuggestions.isNotEmpty) {
-        _suggestionsWindows.add(newSuggestions);
-        cur++;
-      }
-    } else {
-      cur++;
-    }
-    notifyListeners();
-  }
-
-  windowBack() {
-    if (cur > 0) {
-      cur--;
-    }
-    notifyListeners();
-  }
-}
-
 void main() {
   runApp(
     ChangeNotifierProvider(
@@ -96,8 +34,59 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          YourMovie(),
-          TagsToChose(),
+          MyMovie(),
+          // TagsToChose(),
+        ],
+      ),
+    );
+  }
+}
+
+class MovieTags extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<SuggestionTagsModel>(builder: (context, tags, child) {
+      return Column(
+        children: tags.tags
+            .map((Tag t) => MyChosenTag(ctag: t.tagName, cancel: () => {}))
+            .toList(),
+      );
+    });
+  }
+}
+
+class MyMovie extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 8,
+            ),
+            child: Text(
+              "Your movie",
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
+          SizedBox(
+            height: 170,
+            child: MovieTags(),
+          ),
+
+          /*ChosenTag(
+            ctag: "Undefined",
+          ),*/
+          ButtonTheme(
+            minWidth: double.infinity,
+            buttonColor: Colors.deepOrange,
+            textTheme: ButtonTextTheme.primary,
+            child: RaisedButton(
+              onPressed: () => {},
+              child: Text("Get movie suggestions"),
+            ),
+          ),
         ],
       ),
     );
@@ -258,54 +247,49 @@ class ChangeTagsButtons extends StatelessWidget {
   }
 }
 
-class TagChoiceMenu extends StatefulWidget {
-  @override
-  _TagChoiceMenuState createState() => _TagChoiceMenuState();
-}
+class TagChoiceMenu extends StatelessWidget {
+  /*List<Tag> _suggestedTags = [
+    Tag(
+      tagName: "Comedy",
+      suggMovie: Movie(
+        title: "Forrest Gump",
+        imdbId: "1",
+        popularity: 100,
+      ),
+    ),
+    Tag(
+      tagName: "Comedy",
+      suggMovie: Movie(
+        title: "Forrest Gump",
+        imdbId: "1",
+        popularity: 100,
+      ),
+    ),
+    Tag(
+      tagName: "Comedy",
+      suggMovie: Movie(
+        title: "Forrest Gump",
+        imdbId: "1",
+        popularity: 100,
+      ),
+    ),
+  ];*/
 
-class _TagChoiceMenuState extends State<TagChoiceMenu> {
-  List<Tag> _suggestedTags = [
-    Tag(
-      tagName: "Comedy",
-      suggMovie: Movie(
-        title: "Forrest Gump",
-        imdbId: "1",
-        popularity: 100,
-      ),
-    ),
-    Tag(
-      tagName: "Comedy",
-      suggMovie: Movie(
-        title: "Forrest Gump",
-        imdbId: "1",
-        popularity: 100,
-      ),
-    ),
-    Tag(
-      tagName: "Comedy",
-      suggMovie: Movie(
-        title: "Forrest Gump",
-        imdbId: "1",
-        popularity: 100,
-      ),
-    ),
-  ];
-
-  @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
-      child: GridView.count(
-        crossAxisCount: 2,
-        childAspectRatio: 3,
-        children: _suggestedTags
-            .map((Tag t) => TagSuggestion(
-                  myTag: t,
-                  selectTag: () => {},
-                ))
-            .toList(),
-      ),
-    );
+        height: 200,
+        child: Consumer(
+          builder: (context, value, child) => GridView.count(
+            crossAxisCount: 2,
+            childAspectRatio: 3,
+            children: value.suggestions
+                .map((Tag t) => TagSuggestion(
+                      myTag: t,
+                      selectTag: () => {}, //value.addTag(t),
+                    ))
+                .toList(),
+          ),
+        ));
   }
 }
 
@@ -350,5 +334,74 @@ class MyTagSuggestion extends StatelessWidget {
             ],
           ),
         ));
+  }
+}
+
+class SuggestionTagsModel extends ChangeNotifier {
+  /*SuggestionTagsModel() {
+    this.updateSuggestionWindows();
+  }
+  */
+  final List<Tag> _tags = [];
+  UnmodifiableListView<Tag> get tags => UnmodifiableListView(_tags);
+  final List<List<Tag>> _suggestionsWindows = [];
+  TagSuggestionsLoader _tagSuggestionsLoader = TagSuggestionsLoader();
+  int cur = 0;
+  UnmodifiableListView<Tag> get suggestions =>
+      UnmodifiableListView(_suggestionsWindows[cur]);
+  //final List<Map<String, int>> _newPrefs = [];
+  //Preferences _currentPrefs = Preferences();
+
+  void addTag(Tag t) {
+    if (tags.length < 3) {
+      _tags.add(t);
+      updateSuggestionWindows();
+      notifyListeners();
+    } else {
+      print("Warning: trying to search more than 3 tags");
+    }
+  }
+
+  void updateSuggestionWindows() async {
+    _suggestionsWindows.clear();
+    _suggestionsWindows.add(await _loadNewSuggestions());
+    cur = 0;
+  }
+
+  void removeAllTags() async {
+    _tags.clear();
+    updateSuggestionWindows();
+    notifyListeners();
+  }
+
+  void removeTagAt(int i) {
+    _tags.removeAt(i);
+    updateSuggestionWindows();
+    notifyListeners();
+  }
+
+  Future<List<Tag>> _loadNewSuggestions() async {
+    await _tagSuggestionsLoader.updateAvailableTags(_tags);
+    return _tagSuggestionsLoader.getNRandomTags(6);
+  }
+
+  windowFwd() async {
+    if (cur == _suggestionsWindows.length - 1) {
+      List<Tag> newSuggestions = await _loadNewSuggestions();
+      if (newSuggestions.isNotEmpty) {
+        _suggestionsWindows.add(newSuggestions);
+        cur++;
+      }
+    } else {
+      cur++;
+    }
+    notifyListeners();
+  }
+
+  windowBack() {
+    if (cur > 0) {
+      cur--;
+    }
+    notifyListeners();
   }
 }
