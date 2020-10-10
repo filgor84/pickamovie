@@ -8,10 +8,13 @@ class ChosenTags extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final myMovie = Provider.of<ChosenMovie>(context);
-    return Column(children: [
-      for (var i = 0; i < myMovie.tags.length; i++)
-        MyChosenTag(
-            ctag: myMovie.tags[i].tagName, cancel: () => myMovie.removeAt(i))
-    ]);
+    return new ListView(
+      shrinkWrap: true,
+      children: [
+        for (var i = 0; i < myMovie.tags.length; i++)
+          MyChosenTag(
+              ctag: myMovie.tags[i].tagName, cancel: () => myMovie.removeAt(i))
+      ],
+    );
   }
 }

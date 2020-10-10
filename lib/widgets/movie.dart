@@ -16,15 +16,15 @@ class Movie extends StatelessWidget {
         children: <Widget>[
           Container(
             padding: EdgeInsets.symmetric(
-              vertical: 8,
+              vertical: 3,
             ),
             child: Text(
               "Your movie",
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
-          SizedBox(
-            height: 170,
+          Container(
+            height: 135,
             child: ChosenTags(),
           ),
           ButtonTheme(

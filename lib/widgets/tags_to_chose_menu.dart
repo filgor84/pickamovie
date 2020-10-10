@@ -13,7 +13,7 @@ class TagsToChoseMenu extends StatelessWidget {
               "What kind of movie would you like?",
               style: Theme.of(context).textTheme.headline6,
             ),
-            padding: EdgeInsets.symmetric(vertical: 12),
+            padding: EdgeInsets.symmetric(vertical: 6),
           ),
           TagChoiceMenu(),
         ],

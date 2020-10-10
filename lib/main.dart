@@ -6,8 +6,6 @@ import 'package:pickamovie/services/movie_db.dart';
 import 'package:pickamovie/services/movie_tag_db.dart';
 import 'package:pickamovie/services/preferences_db.dart';
 import 'package:pickamovie/states/chosen_movie.dart';
-import 'package:pickamovie/states/suggestion_tags_window.dart';
-import 'package:pickamovie/states/tag_suggestions.dart';
 import 'package:provider/provider.dart';
 
 void main() {

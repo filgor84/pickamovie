@@ -12,8 +12,8 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          Movie(),
           TagsToChoseMenu(),
+          Movie(),
         ],
       ),
     );

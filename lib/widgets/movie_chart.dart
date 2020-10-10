@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pickamovie/models/movie.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MovieChart extends StatelessWidget {
   final List<Movie> movies;
@@ -8,7 +9,7 @@ class MovieChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        for (var i = 0; i < 10; i++)
+        for (var i = 0; i < movies.length; i++)
           MovieTile(
             movie: movies[i],
             position: i + 1,
@@ -24,6 +25,7 @@ class MovieTile extends StatelessWidget {
   MovieTile({this.position, this.movie});
   @override
   Widget build(BuildContext context) {
+    print(movie.stars);
     return ListTile(
       leading: Chip(
         label: Text(
@@ -41,34 +43,18 @@ class MovieTile extends StatelessWidget {
           fontSize: 20,
         ),
       ),
-      subtitle: Row(
-        children: [
-          Icon(
-            Icons.star,
-            color: Colors.yellow[600],
-          ),
-          Icon(
-            Icons.star,
-            color: Colors.yellow[600],
-          ),
-          Icon(
-            Icons.star,
-            color: Colors.yellow[600],
-          ),
-          Icon(
-            Icons.star,
-            color: Colors.yellow[600],
-          ),
-          Icon(
-            Icons.star,
-            color: Colors.grey,
-          ),
-        ],
-      ),
-      trailing: Icon(
-        Icons.chevron_right,
-        size: 30,
-      ),
+      subtitle: PopularityStars(movie.stars),
+      onTap: () {
+        print("Go to movie $movie");
+        String code = movie.imdbId.toString();
+        code = "0" * (7 - code.length) + code;
+        String url = "https://www.imdb.com/title/tt$code/";
+        if (canLaunch(url) != null)
+          launch(url);
+        else
+          // can't launch url, there is some error
+          throw "Could not launch $url";
+      },
     );
   }
 }

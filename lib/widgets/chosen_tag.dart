@@ -7,6 +7,7 @@ class MyChosenTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      dense: true,
       title: Text(ctag),
       trailing: FlatButton(
         child: Icon(Icons.cancel),

@@ -11,6 +11,7 @@ class TagSuggestion extends StatelessWidget {
     return ListTile(
       leading: Icon(
         Icons.local_movies,
+        color: Colors.yellow,
         size: 35,
       ),
       title: Text(myTag.tagName),

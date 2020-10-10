@@ -10,7 +10,7 @@ class Movie {
     @required title,
     @required imdbId,
     @required popularity,
-    stars,
+    @required stars,
   }) {
     this.title = title;
     this.imdbId = imdbId;
@@ -31,6 +31,6 @@ class Movie {
 
   @override
   String toString() {
-    return "Title:$title\nImdbId:$imdbId\nPopularity:$popularity\n";
+    return "Title:$title\nImdbId:$imdbId\nPopularity:$popularity\nStars: $stars\n";
   }
 }

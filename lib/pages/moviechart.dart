@@ -9,6 +9,7 @@ class MovieChartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.deepOrange[800],
           title: Text("Suggested Movies"),
         ),
         body: MovieChart(movies: movies));
