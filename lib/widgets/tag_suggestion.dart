@@ -14,7 +14,7 @@ class TagSuggestion extends StatelessWidget {
         color: Colors.yellow,
         size: 35,
       ),
-      title: Text(myTag.tagName),
+      title: Text(myTag.tagName.toUpperCase()),
       subtitle: Text(myTag.suggMovie.title),
       dense: true,
       onTap: selectTag,

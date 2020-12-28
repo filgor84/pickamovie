@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pickamovie/models/tag.dart';
-import 'package:pickamovie/services/movie_tag_db.dart';
 import 'package:pickamovie/states/chosen_movie.dart';
 import 'package:pickamovie/states/tag_suggestions.dart';
 import 'package:pickamovie/widgets/tag_suggestion.dart';
