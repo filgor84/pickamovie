@@ -14,7 +14,7 @@ class TitlePage extends StatelessWidget {
                 style: TextStyle(fontSize: 50),
               ),
             ),
-            FlatButton(
+            TextButton(
               child: Text("Start"),
               onPressed: () => Navigator.pushReplacement(
                   context, MaterialPageRoute(builder: (context) => HomePage())),

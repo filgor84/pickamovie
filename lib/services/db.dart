@@ -6,12 +6,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pickamovie/models/movie.dart';
 import 'package:sqflite/sqflite.dart';
 
-class MovieDb {
+class Db {
   static final _databaseName = "movies.db";
-
+  static final tagsPreferenceTable = 'TagsRate';
   static final movieTable = 'Movies';
   static final tagMovieTable = 'TagToMovie';
-  MovieDb();
+  Db();
 
   // only have a single app-wide reference to the database
   static Database _database;
@@ -19,6 +19,8 @@ class MovieDb {
     if (_database != null) return _database;
     // lazily instantiate the db the first time it is accessed
     _database = await _initDatabase();
+    await _database.execute(
+        'CREATE TABLE IF NOT EXISTS TagsRate (id INTEGER PRIMARY KEY, rate INTEGER);');
     return _database;
   }
 
@@ -50,7 +52,8 @@ class MovieDb {
 
   // All of the methods (insert, query, update, delete) can also be done using
   // raw SQL commands. This method uses a raw query to give the row count.
-  Future<List<Movie>> queryMoviesFromTags(List<int> tagIds, int topK) async {
+  Future<List<Movie>> queryMoviesFromTags(
+      List<int> tagIds) /*, int topK)*/ async {
     String queryParams(int n) {
       String res = "?";
       for (int i = 1; i < n; i++) {
@@ -85,9 +88,34 @@ class MovieDb {
       distinct: true,
       where: "movieId IN ($movieNumber)",
       orderBy: "rating DESC",
-      limit: topK,
+      limit: 100,
       whereArgs: movieIds,
     );
     return movies.map((e) => Movie.fromSql(e)).toList();
+  }
+
+  Future<List<Map>> getTagRate(List<int> tagIds) async {
+    Database db = await database;
+    String queryParams(int n) {
+      String res = "?";
+      for (int i = 1; i < n; i++) {
+        res += ", ?";
+      }
+      return res;
+    }
+
+    String params = queryParams(tagIds.length);
+    return db.query(tagsPreferenceTable,
+        distinct: true,
+        where: "id in ($params)",
+        whereArgs: tagIds,
+        orderBy: "rate DESC");
+  }
+
+  void setTagRate(int id, int rate) async {
+    Database db = await database;
+
+    await db.execute(
+        "REPLACE INTO $tagsPreferenceTable (id, rate) VALUES($id, $rate)");
   }
 }

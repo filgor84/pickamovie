@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'package:pickamovie/widgets/movie.dart';
 import 'package:pickamovie/widgets/tags_to_chose_menu.dart';
 
@@ -10,12 +12,10 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.deepOrange[800],
         title: Text("Pick a Movie"),
       ),
-      body: Column(
-        children: <Widget>[
-          TagsToChoseMenu(),
-          Movie(),
-        ],
-      ),
+      body: Column(children: <Widget>[
+        TagsToChoseMenu(),
+        Movie(),
+      ]),
     );
   }
 }

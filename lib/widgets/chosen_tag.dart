@@ -6,15 +6,18 @@ class MyChosenTag extends StatelessWidget {
   MyChosenTag({this.ctag, this.cancel});
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      dense: true,
-      title: Text(ctag),
-      trailing: FlatButton(
-        child: Icon(Icons.cancel),
-        onPressed: () {
-          print("Cancel");
-          cancel();
-        },
+    return Container(
+      height: 30,
+      child: ListTile(
+        dense: true,
+        title: Text(ctag),
+        trailing: TextButton(
+          child: Icon(Icons.cancel),
+          onPressed: () {
+            print("Cancel");
+            cancel();
+          },
+        ),
       ),
     );
   }
