@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pickamovie/pages/moviechart.dart';
+import 'package:pickamovie/services/db.dart';
 import 'package:pickamovie/services/tags_tree_db.dart';
 import 'package:pickamovie/states/chosen_movie.dart';
 import 'package:pickamovie/states/tag_suggestions.dart';
@@ -17,6 +19,18 @@ class TagChoiceMenu extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.done) {
             print(snapshot.data);
             //List<Tag> relTags = snapshot.data.sublist(0, 6);
+            if (snapshot.data.isEmpty) {
+              Provider.of<Db>(context, listen: false)
+                  .queryMoviesFromTags(
+                      chosenTags.tags.map((e) => e.tagId).toList())
+                  .then((value) {
+                print(value);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MovieChartPage(movies: value)));
+              });
+            }
             return ChangeNotifierProvider<TagSuggestions>(
               create: (_) => TagSuggestions(tagsToChose: snapshot.data),
               child: SuggestionMenuNew(),

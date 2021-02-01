@@ -9,6 +9,7 @@ class TagSuggestion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      tileColor: Color.fromRGBO(0, 0, 0, 0.4),
       leading: Icon(
         Icons.local_movies,
         color: Colors.yellow,

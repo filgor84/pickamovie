@@ -9,10 +9,14 @@ class MyChosenTag extends StatelessWidget {
     return Container(
       height: 30,
       child: ListTile(
+        tileColor: Color.fromRGBO(0, 0, 0, 0.4),
         dense: true,
         title: Text(ctag),
         trailing: TextButton(
-          child: Icon(Icons.cancel),
+          child: Icon(
+            Icons.cancel,
+            color: Colors.yellow,
+          ),
           onPressed: () {
             print("Cancel");
             cancel();

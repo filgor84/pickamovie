@@ -6,21 +6,61 @@ class TitlePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Column(
-          children: [
-            Container(
-              child: Text(
-                "Pick A Movie",
-                style: TextStyle(fontSize: 50),
+        body: Stack(children: [
+          Container(
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                image: new AssetImage("assets/img/sipario.jpg"),
+                fit: BoxFit.cover,
               ),
             ),
-            TextButton(
-              child: Text("Start"),
-              onPressed: () => Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => HomePage())),
-            )
-          ],
-        ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Image.asset(
+                  "assets/icons/icon.png",
+                  height: 200,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Center(
+                  child: Text(
+                    "Pick A Movie",
+                    style: TextStyle(
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                      child: TextButton(
+                    child: Text(
+                      "Start",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.yellow,
+                      ),
+                    ),
+                    onPressed: () => Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => HomePage())),
+                    style: TextButton.styleFrom(
+                      primary: Colors.yellow,
+                    ),
+                  ))
+                ],
+              )
+            ],
+          ),
+        ]),
       ),
     );
   }

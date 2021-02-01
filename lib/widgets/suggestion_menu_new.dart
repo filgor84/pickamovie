@@ -33,14 +33,20 @@ class SuggestionMenuNew extends StatelessWidget {
                 Provider.of<TagSuggestions>(context, listen: false)
                     .windowBack();
               },
-              child: Icon(Icons.arrow_left),
+              child: Icon(
+                Icons.arrow_left,
+                color: Colors.yellow,
+              ),
             ),
             TextButton(
               onPressed: () {
                 print("Forward");
                 Provider.of<TagSuggestions>(context, listen: false).windowFwd();
               },
-              child: Icon(Icons.arrow_right),
+              child: Icon(
+                Icons.arrow_right,
+                color: Colors.yellow,
+              ),
             )
           ],
           mainAxisAlignment: MainAxisAlignment.center,

@@ -7,8 +7,10 @@ class TagsToChoseMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Card(
+        elevation: 0,
+        color: Colors.transparent,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(5.0),
           child: Column(
             children: <Widget>[
               Container(
@@ -16,7 +18,8 @@ class TagsToChoseMenu extends StatelessWidget {
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
                     "What kind of movie would you like?",
-                    style: Theme.of(context).textTheme.headline6,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ),
               ),

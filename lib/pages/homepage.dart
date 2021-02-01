@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:footer/footer.dart';
-import 'package:footer/footer_view.dart';
+
 import 'package:pickamovie/widgets/movie.dart';
 import 'package:pickamovie/widgets/tags_to_chose_menu.dart';
 
@@ -9,12 +8,34 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange[800],
-        title: Text("Pick a Movie"),
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset(
+            "assets/icons/icon.png",
+            height: 4,
+          ),
+        ),
+        backgroundColor: Color.fromRGBO(15 * 16 + 15, 31, 0, 0.8),
+        title: Text("Pick a Movie",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            )),
       ),
-      body: Column(children: <Widget>[
-        TagsToChoseMenu(),
-        Movie(),
+      body: Stack(children: [
+        Container(
+          decoration: new BoxDecoration(
+            image: new DecorationImage(
+              image: new AssetImage("assets/img/sipario.jpg"),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        Column(
+          children: <Widget>[
+            TagsToChoseMenu(),
+            Movie(),
+          ],
+        ),
       ]),
     );
   }
