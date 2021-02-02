@@ -12,6 +12,16 @@ class MovieChartPage extends StatelessWidget {
           backgroundColor: Color.fromRGBO(15 * 16 + 15, 31, 0, 0.8),
           title: Text("Suggested Movies"),
         ),
-        body: MovieChart(movies: movies));
+        body: Stack(children: [
+          Container(
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                image: new AssetImage("assets/img/sipario.jpg"),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          MovieChart(movies: movies),
+        ]));
   }
 }

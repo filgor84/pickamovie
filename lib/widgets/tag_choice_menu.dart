@@ -25,6 +25,7 @@ class TagChoiceMenu extends StatelessWidget {
                       chosenTags.tags.map((e) => e.tagId).toList())
                   .then((value) {
                 print(value);
+                chosenTags.removeAll();
                 Navigator.push(
                     context,
                     MaterialPageRoute(

@@ -8,6 +8,7 @@ class MovieChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      padding: EdgeInsets.symmetric(vertical: 10),
       children: [
         for (var i = 0; i < movies.length; i++)
           MovieTile(
@@ -27,7 +28,7 @@ class MovieTile extends StatelessWidget {
   Widget build(BuildContext context) {
     print(movie.stars);
     return ListTile(
-      leading: Chip(
+      /*leading: Chip(
         label: Text(
           position.toString(),
           style: TextStyle(
@@ -36,7 +37,7 @@ class MovieTile extends StatelessWidget {
           ),
         ),
         backgroundColor: Colors.orange[300],
-      ),
+      ),*/
       title: Text(
         movie.title,
         style: TextStyle(

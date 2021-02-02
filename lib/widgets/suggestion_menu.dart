@@ -30,7 +30,7 @@ class SuggestionMenu extends StatelessWidget {
         ),
         Row(
           children: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () {
                 print("Backward");
                 Provider.of<TagSuggestions>(context, listen: false)
@@ -38,7 +38,7 @@ class SuggestionMenu extends StatelessWidget {
               },
               child: Icon(Icons.arrow_left),
             ),
-            FlatButton(
+            TextButton(
               onPressed: () {
                 print("Forward");
                 Provider.of<TagSuggestions>(context, listen: false).windowFwd();

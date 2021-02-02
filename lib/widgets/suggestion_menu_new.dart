@@ -15,12 +15,15 @@ class SuggestionMenuNew extends StatelessWidget {
           child: Column(
             children: Provider.of<TagSuggestions>(context)
                 .currentWindow
-                .map((Tag t) => TagSuggestion(
-                    myTag: t,
-                    selectTag: () {
-                      Provider.of<ChosenMovie>(context, listen: false)
-                          .addTag(t);
-                    } //value.addTag(t),
+                .map((Tag t) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 3),
+                      child: TagSuggestion(
+                          myTag: t,
+                          selectTag: () {
+                            Provider.of<ChosenMovie>(context, listen: false)
+                                .addTag(t);
+                          } //value.addTag(t),
+                          ),
                     ))
                 .toList(),
           ),
