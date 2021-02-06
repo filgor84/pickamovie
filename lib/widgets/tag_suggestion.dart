@@ -17,11 +17,11 @@ class TagSuggestion extends StatelessWidget {
       ),
       title: Text(
         myTag.tagName.toUpperCase(),
-        style: TextStyle(fontSize: 15),
+        style: TextStyle(fontSize: 13),
       ),
       subtitle: Text(
         myTag.suggMovie.title,
-        style: TextStyle(fontSize: 14),
+        style: TextStyle(fontSize: 12),
       ),
       dense: true,
       onTap: selectTag,

@@ -26,7 +26,7 @@ class Movie extends StatelessWidget {
               ),
             ),
             Container(
-              height: 100,
+              height: 90,
               child: ChosenTags(),
             ),
             ButtonTheme(

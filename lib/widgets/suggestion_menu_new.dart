@@ -16,7 +16,7 @@ class SuggestionMenuNew extends StatelessWidget {
             children: Provider.of<TagSuggestions>(context)
                 .currentWindow
                 .map((Tag t) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 3),
+                      padding: const EdgeInsets.symmetric(vertical: 0.5),
                       child: TagSuggestion(
                           myTag: t,
                           selectTag: () {

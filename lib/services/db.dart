@@ -20,7 +20,7 @@ class Db {
     // lazily instantiate the db the first time it is accessed
     _database = await _initDatabase();
     await _database.execute(
-        'CREATE TABLE IF NOT EXISTS TagsRate (id INTEGER PRIMARY KEY, rate INTEGER);');
+        'CREATE TABLE IF NOT EXISTS TagMetrics (id INTEGER PRIMARY KEY, rate INTEGER default  0, views INTEGER default 0);');
     return _database;
   }
 
@@ -118,4 +118,12 @@ class Db {
     await db.execute(
         "REPLACE INTO $tagsPreferenceTable (id, rate) VALUES($id, $rate)");
   }
+/*
+  void setTagsRate(List <int> ids, List <int> rates) async {
+    Database db = await database;
+    await db.execute(
+        "REPLACE INTO $tagsPreferenceTable (id, rate) VALUES($id, $rate)");
+  }
+*/
+
 }
