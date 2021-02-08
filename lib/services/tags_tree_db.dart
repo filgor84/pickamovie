@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:pickamovie/models/movie.dart';
 import 'package:pickamovie/models/tag.dart';
 
 class TagsTree {
+  //Db _db = Db();
   Future<List<Tag>> getRelevantTags(List<Tag> chosenTags) async {
     final tagNames = chosenTags.map((e) => e.tagName).toList();
     tagNames.sort();
@@ -13,13 +13,22 @@ class TagsTree {
     try {
       String jsonData = await rootBundle.loadString(path);
       Iterable lTags = json.decode(jsonData);
-      return lTags.map((e) => Tag.fromJson(e)).toList();
+      List<Tag> tags = lTags.map((e) => Tag.fromJson(e)).toList();
+
+      /*List<Map> tagsMetrics = await _db.getTagMetrics(tags.map((e) => e.tagId));
+      Map metrics = Map();
+      for (Map row in tagsMetrics) {
+        metrics[row["tagId"]] = row;
+      }
+      for (Tag tag in tags) {
+        if (metrics.containsKey(tag.tagId)) {
+          tag.metrics.views = metrics[tag.tagId]["views"] ?? 0;
+          tag.metrics.rate = metrics[tag.tagId]["rate"] ?? 0;
+        }
+      }*/
+      return tags;
     } catch (_) {
       return [];
     }
-  }
-
-  Future<List<Movie>> getTopPopularMovie(List<Tag> chosenTags) async {
-    return [];
   }
 }

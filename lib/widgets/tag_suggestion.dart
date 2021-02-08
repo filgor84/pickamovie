@@ -9,21 +9,19 @@ class TagSuggestion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      dense: true,
+      visualDensity: VisualDensity(vertical: -3.2),
       tileColor: Color.fromRGBO(0, 0, 0, 0.4),
       leading: Icon(
         Icons.local_movies,
         color: Colors.yellow,
-        size: 35,
       ),
       title: Text(
         myTag.tagName.toUpperCase(),
-        style: TextStyle(fontSize: 13),
       ),
       subtitle: Text(
         myTag.suggMovie.title,
-        style: TextStyle(fontSize: 12),
       ),
-      dense: true,
       onTap: selectTag,
     );
   }

@@ -4,11 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pickamovie/models/movie.dart';
+import 'package:pickamovie/models/tag.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Db {
   static final _databaseName = "movies.db";
-  static final tagsPreferenceTable = 'TagsRate';
+  static final tagMetricsTable = 'TagMetrics';
   static final movieTable = 'Movies';
   static final tagMovieTable = 'TagToMovie';
   Db();
@@ -52,6 +53,11 @@ class Db {
 
   // All of the methods (insert, query, update, delete) can also be done using
   // raw SQL commands. This method uses a raw query to give the row count.
+
+  Future<List<Movie>> queryMoviesByTags(List<Tag> tags) async {
+    return queryMoviesFromTags(tags.map((t) => (t.tagId)).toList());
+  }
+
   Future<List<Movie>> queryMoviesFromTags(
       List<int> tagIds) /*, int topK)*/ async {
     String queryParams(int n) {
@@ -94,7 +100,8 @@ class Db {
     return movies.map((e) => Movie.fromSql(e)).toList();
   }
 
-  Future<List<Map>> getTagRate(List<int> tagIds) async {
+  Future<List<Tag>> getTagWithMetrics(List<Tag> tags) async {
+    List<int> tagIds = (tags).map((t) => t.tagId).toList();
     Database db = await database;
     String queryParams(int n) {
       String res = "?";
@@ -105,19 +112,37 @@ class Db {
     }
 
     String params = queryParams(tagIds.length);
-    return db.query(tagsPreferenceTable,
-        distinct: true,
-        where: "id in ($params)",
-        whereArgs: tagIds,
-        orderBy: "rate DESC");
+    List<Map> tagsMetrics = await db.query(
+      tagMetricsTable,
+      where: "id in ($params)",
+      whereArgs: tagIds,
+    );
+    Map metrics = Map();
+    print(tagsMetrics);
+    for (Map row in tagsMetrics) {
+      metrics[row["id"]] = row;
+    }
+    for (Tag tag in tags) {
+      if (metrics.containsKey(tag.tagId)) {
+        tag.metrics.views = metrics[tag.tagId]["views"] ?? 0;
+        tag.metrics.rate = metrics[tag.tagId]["rate"] ?? 0;
+      }
+    }
+    return tags;
   }
 
-  void setTagRate(int id, int rate) async {
+  void updateMetrics(List<Tag> tags) async {
     Database db = await database;
-
-    await db.execute(
-        "REPLACE INTO $tagsPreferenceTable (id, rate) VALUES($id, $rate)");
+    String values = tags
+        .map((t) => "(${t.tagId}, ${t.metrics.rate}, ${t.metrics.views})")
+        .toList()
+        .join(", ");
+    String query =
+        "REPLACE INTO $tagMetricsTable (id, rate, views) VALUES $values;";
+    print(query);
+    await db.execute(query);
   }
+
 /*
   void setTagsRate(List <int> ids, List <int> rates) async {
     Database db = await database;
