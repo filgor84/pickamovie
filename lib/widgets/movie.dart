@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pickamovie/pages/moviechart.dart';
-import 'package:pickamovie/services/db.dart';
+import 'package:pickamovie/services/recsys.dart';
 import 'package:pickamovie/states/chosen_movie.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +9,7 @@ import 'chosen_tags.dart';
 class Movie extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final movieDb = Provider.of<Db>(context, listen: false);
+    final _recsys = Provider.of<RecSys>(context, listen: false);
     final myMovie = Provider.of<ChosenMovie>(context);
     return Visibility(
       visible: myMovie.tags.isNotEmpty,
@@ -23,10 +23,11 @@ class Movie extends StatelessWidget {
               ),
               child: Text(
                 "Your movie",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
             ),
             Container(
-              height: 90,
+              height: 100,
               child: ChosenTags(),
             ),
             ButtonTheme(
@@ -35,10 +36,7 @@ class Movie extends StatelessWidget {
               textTheme: ButtonTextTheme.primary,
               child: TextButton(
                 onPressed: () => {
-                  movieDb
-                      .queryMoviesFromTags(
-                          myMovie.tags.map((e) => e.tagId).toList())
-                      .then((value) {
+                  _recsys.getRecommendedMovies(myMovie.tags).then((value) {
                     print(value);
                     Navigator.push(
                         context,

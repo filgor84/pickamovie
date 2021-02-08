@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pickamovie/models/tag.dart';
+import 'package:pickamovie/services/recsys.dart';
 import 'package:pickamovie/states/chosen_movie.dart';
 import 'package:pickamovie/states/tag_suggestions.dart';
 import 'package:pickamovie/widgets/tag_suggestion.dart';
@@ -9,21 +10,29 @@ import 'package:provider/provider.dart';
 class SuggestionMenuNew extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _tagSuggestions = Provider.of<TagSuggestions>(context);
     return Column(
       children: [
         Container(
-          child: Column(
-            children: Provider.of<TagSuggestions>(context)
-                .currentWindow
+          height: 313,
+          child: ListView(
+            children: _tagSuggestions.currentWindow
                 .map((Tag t) => Padding(
                       padding: const EdgeInsets.symmetric(vertical: 0.5),
                       child: TagSuggestion(
-                          myTag: t,
-                          selectTag: () {
+                        myTag: t,
+                        selectTag: () {
+                          List<Tag> views = _tagSuggestions.windows
+                              .reduce((value, element) => value + element)
+                              .toList();
+                          Provider.of<RecSys>(context, listen: false)
+                              .updateMetrics(t, views)
+                              .then((_) {
                             Provider.of<ChosenMovie>(context, listen: false)
                                 .addTag(t);
-                          } //value.addTag(t),
-                          ),
+                          });
+                        },
+                      ),
                     ))
                 .toList(),
           ),

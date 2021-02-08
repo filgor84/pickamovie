@@ -5,6 +5,7 @@ import 'package:pickamovie/models/tag.dart';
 class TagSuggestions extends ChangeNotifier {
   Random random;
   List<List<Tag>> windows = [];
+  List<Map> metrics;
   List<Tag> tagsToChose;
   int cur = 0;
   List<Tag> currentWindow;
