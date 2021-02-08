@@ -48,6 +48,7 @@ class TagSuggestions extends ChangeNotifier {
     return res;
   }
 
+/*
   List<Tag> _getKRandomTags(k) {
     List<Tag> res = [];
     for (int i = 0; i < k; i++) {
@@ -58,8 +59,8 @@ class TagSuggestions extends ChangeNotifier {
     }
     return res;
   }
-
-  List<Tag> _getNewSuggestions({int n = 3, int m = 3}) {
-    return _getTopKFavoriteTags(n) + _getKRandomTags(m);
+*/
+  List<Tag> _getNewSuggestions() {
+    return _getTopKFavoriteTags(6);
   }
 }
